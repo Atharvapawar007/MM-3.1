@@ -42,13 +42,14 @@ const startServer = async () => {
     console.log('✅ Database connection established successfully.');
 
     // Sync database models
-    await sequelize.sync({ alter: true });
+    await sequelize.sync({ force: false });
     console.log('✅ Database models synchronized.');
 
-    // Start server
-    app.listen(PORT, () => {
+    // Start server - listen on all interfaces for Android emulator access
+    app.listen(PORT, '0.0.0.0', () => {
       console.log(`🚀 Server is running on port ${PORT}`);
       console.log(`📍 Health check: http://localhost:${PORT}/api/health`);
+      console.log(`📱 Android emulator: http://192.168.33.111:${PORT}/api/health`);
     });
   } catch (error) {
     console.error('❌ Unable to start server:', error);

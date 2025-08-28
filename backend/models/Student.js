@@ -23,24 +23,21 @@ const Student = sequelize.define('Student', {
       isEmail: true
     }
   },
-  bus_id: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-    references: {
-      model: 'drivers',
-      key: 'id'
-    }
-  },
-  password: {
+  // FK to buses.bus_number
+  busNumber: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: function() {
-      return this.prn;
+    field: 'bus_number',
+    references: {
+      model: 'buses',
+      key: 'bus_number'
     }
   }
 }, {
   tableName: 'students',
-  timestamps: true
+  timestamps: true,
+  createdAt: 'created_at',
+  updatedAt: 'updated_at'
 });
 
 module.exports = Student;

@@ -1,19 +1,15 @@
-const { Bus, Driver, Student } = require('../models');
+const { Bus, Student } = require('../models');
 
 const getBusDetails = async (req, res) => {
   try {
-    const studentId = req.student.id;
+    const studentPrn = req.student.prn;
 
-    console.log('Fetching bus details for student ID:', studentId);
+    console.log('Fetching bus details for student PRN:', studentPrn);
 
-    const student = await Student.findByPk(studentId, {
+    const student = await Student.findByPk(studentPrn, {
       include: [{
         model: Bus,
-        as: 'bus',
-        include: [{
-          model: Driver,
-          as: 'driver'
-        }]
+        as: 'bus'
       }]
     });
 
@@ -22,13 +18,11 @@ const getBusDetails = async (req, res) => {
       return res.status(404).json({ error: 'No bus assigned to this student' });
     }
 
-    console.log('Bus details fetched successfully for student:', studentId);
+    console.log('Bus details fetched successfully for student:', studentPrn);
 
     res.json({
       busNumber: student.bus.busNumber,
       numberPlate: student.bus.numberPlate,
-      driverName: student.bus.driver.name,
-      driverPhone: student.bus.driver.phoneNumber,
       isActive: student.bus.isActive
     });
   } catch (error) {
@@ -39,11 +33,11 @@ const getBusDetails = async (req, res) => {
 
 const getBusLocation = async (req, res) => {
   try {
-    const studentId = req.student.id;
+    const studentPrn = req.student.prn;
 
-    console.log('Fetching bus location for student ID:', studentId);
+    console.log('Fetching bus location for student PRN:', studentPrn);
 
-    const student = await Student.findByPk(studentId, {
+    const student = await Student.findByPk(studentPrn, {
       include: [{
         model: Bus,
         as: 'bus'
@@ -91,9 +85,9 @@ const getETA = async (req, res) => {
   try {
     const studentId = req.student.id;
 
-    console.log('Calculating ETA for student ID:', studentId);
+    console.log('Calculating ETA for student PRN:', req.student.prn);
 
-    const student = await Student.findByPk(studentId, {
+    const student = await Student.findByPk(req.student.prn, {
       include: [{
         model: Bus,
         as: 'bus'
@@ -133,16 +127,16 @@ const getETA = async (req, res) => {
 // Admin endpoint to update bus location (would be called by driver's app)
 const updateBusLocation = async (req, res) => {
   try {
-    const { busId, latitude, longitude } = req.body;
+    const { busNumber, latitude, longitude } = req.body;
 
-    console.log('Updating bus location for bus ID:', busId);
+    console.log('Updating bus location for bus number:', busNumber);
 
-    if (!busId || !latitude || !longitude) {
+    if (!busNumber || latitude === undefined || longitude === undefined) {
       console.log('Update Location Error: Missing required fields');
-      return res.status(400).json({ error: 'Bus ID, latitude, and longitude are required' });
+      return res.status(400).json({ error: 'busNumber, latitude, and longitude are required' });
     }
 
-    const bus = await Bus.findByPk(busId);
+    const bus = await Bus.findByPk(busNumber);
 
     if (!bus) {
       console.log('Update Location Error: Bus not found');

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import Toast from 'react-native-toast-message';
-import { User, Mail, Hash, MapPin, Bus } from 'lucide-react-native';
+import { User, Mail, Hash, MapPin, Bus, Phone } from 'lucide-react-native';
 import CustomButton from '../../components/CustomButton';
 import ApiService from '../../services/api';
 import { Colors } from '../../constants/Colors';
@@ -101,6 +101,23 @@ const MyAccountTab = ({ student, navigation }) => {
           />
         )}
 
+        {student.bus?.driver && (
+          <>
+            <InfoCard
+              icon={User}
+              title="Driver Name"
+              value={student.bus.driver.name}
+              color={Colors.success}
+            />
+            <InfoCard
+              icon={Phone}
+              title="Driver Contact"
+              value={student.bus.driver.contact || student.bus.driver.phoneNumber}
+              color={Colors.accent}
+            />
+          </>
+        )}
+
         <Text style={styles.sectionTitle}>Account Settings</Text>
 
         <CustomButton
@@ -109,6 +126,11 @@ const MyAccountTab = ({ student, navigation }) => {
           variant="secondary"
           style={[styles.actionButton, styles.logoutButton]}
         />
+
+        <View style={styles.footerContainer}>
+          <Text style={styles.footerLine}>Created with ❤️ by</Text>
+          <Text style={styles.footerNames}>Atharva Pawar, Yash Mulay, Vaishnavi Hajare, Tanvi Patil</Text>
+        </View>
       </View>
     </ScrollView>
   );
@@ -200,6 +222,21 @@ const styles = StyleSheet.create({
   logoutButton: {
     backgroundColor: Colors.error,
     borderColor: Colors.error,
+  },
+  footerContainer: {
+    marginTop: 8,
+    alignItems: 'center',
+  },
+  footerLine: {
+    fontSize: 12,
+    color: Colors.textLight,
+    marginTop: 8,
+  },
+  footerNames: {
+    fontSize: 12,
+    color: Colors.textLight,
+    textAlign: 'center',
+    marginTop: 2,
   },
 });
 

@@ -2,48 +2,58 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
 const Bus = sequelize.define('Bus', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
+  // PK: buses.bus_number (string)
   busNumber: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true
+    primaryKey: true,
+    unique: true,
+    field: 'bus_number'
   },
   numberPlate: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true
+    unique: true,
+    field: 'number_plate'
   },
-  driverId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: 'Drivers',
-      key: 'id'
-    }
+  // Optional FK to drivers.driver_number
+  driverNumber: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    field: 'driver_number'
   },
+  // driver_number exists in DB but we are ignoring drivers per requirements
   isActive: {
     type: DataTypes.BOOLEAN,
-    defaultValue: false
+    defaultValue: false,
+    field: 'is_active'
   },
   currentLatitude: {
     type: DataTypes.DECIMAL(10, 8),
-    allowNull: true
+    allowNull: true,
+    field: 'current_latitude'
   },
   currentLongitude: {
     type: DataTypes.DECIMAL(11, 8),
-    allowNull: true
+    allowNull: true,
+    field: 'current_longitude'
   },
   lastLocationUpdate: {
     type: DataTypes.DATE,
-    allowNull: true
+    allowNull: true,
+    field: 'last_location_update'
+  },
+  studentsAlloted: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+    field: 'students_alloted'
   }
 }, {
   tableName: 'buses',
-  timestamps: true
+  timestamps: true,
+  createdAt: 'created_at',
+  updatedAt: 'updated_at'
 });
 
 module.exports = Bus;

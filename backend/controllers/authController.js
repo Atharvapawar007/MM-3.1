@@ -1,17 +1,5 @@
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
-const nodemailer = require('nodemailer');
-const { Student, Bus, Driver } = require('../models');
-
-// Email transporter setup
-const transporter = nodemailer.createTransporter({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
-});
+const { Student, Bus } = require('../models');
 
 const login = async (req, res) => {
   try {
@@ -28,9 +16,12 @@ const login = async (req, res) => {
     const student = await Student.findOne({
       where: { email },
       include: [{
-        model: Driver,
-        as: 'driver',
-        foreignKey: 'bus_id'
+        model: Bus,
+        as: 'bus',
+        include: [{
+          model: require('../models').Driver,
+          as: 'driver'
+        }]
       }]
     });
 
@@ -39,11 +30,9 @@ const login = async (req, res) => {
       return res.status(401).json({ error: 'Invalid email or PRN' });
     }
 
-    // Check if PRN matches password (either default PRN or updated password)
-    const isValidPassword = await bcrypt.compare(prn, student.password) || prn === student.password;
-
-    if (!isValidPassword) {
-      console.log('Login Error: Invalid PRN/password for email:', email);
+    // Check if PRN matches the student's PRN (direct comparison)
+    if (prn !== student.prn) {
+      console.log('Login Error: Invalid PRN for email:', email);
       return res.status(401).json({ error: 'Invalid email or PRN' });
     }
 
@@ -64,12 +53,19 @@ const login = async (req, res) => {
         name: student.name,
         email: student.email,
         gender: student.gender,
-        bus_id: student.bus_id,
-        driver: student.driver
+        busNumber: student.busNumber,
+        bus: student.bus,
+        driver: student.bus?.driver
       }
     });
   } catch (error) {
-    console.log('Login Error:', error.message);
+    console.error('❌ Login Error Details:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name,
+      sql: error.sql || 'No SQL query',
+      original: error.original || 'No original error'
+    });
     res.status(500).json({ error: 'Internal server error' });
   }
 };

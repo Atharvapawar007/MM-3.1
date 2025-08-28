@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Text, Image, StyleSheet, Animated } from 'react-native';
+import { SvgUri } from 'react-native-svg';
 import { Colors } from '../constants/Colors';
 
 const SplashScreen = ({ navigation }) => {
@@ -41,13 +42,13 @@ const SplashScreen = ({ navigation }) => {
           },
         ]}
       >
-        <Image
-          source={require('../assets/images/icon.png')}
-          style={styles.logo}
-          resizeMode="contain"
+        <SvgUri
+          uri={Image.resolveAssetSource(require('../assets/images/logo.svg')).uri}
+          width={120}
+          height={120}
         />
-        <Text style={styles.title}>Bus Tracking App</Text>
-        <Text style={styles.subtitle}>ABC Engineering College</Text>
+        <Text style={styles.title}>KIT's College of Engineering, Kolhapur</Text>
+        <Text style={styles.subtitle}>Bus Tracking App</Text>
       </Animated.View>
     </View>
   );

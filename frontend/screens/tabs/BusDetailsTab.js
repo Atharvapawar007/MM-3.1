@@ -100,19 +100,7 @@ const BusDetailsTab = ({ student }) => {
           color={Colors.accent}
         />
 
-        <InfoCard
-          icon={User}
-          title="Driver Name"
-          value={busDetails.driverName}
-          color={Colors.success}
-        />
-
-        <InfoCard
-          icon={Phone}
-          title="Driver Phone"
-          value={busDetails.driverPhone}
-          color={Colors.button}
-        />
+        {/* Driver details removed per schema sync */}
 
         {student.busStop && (
           <InfoCard

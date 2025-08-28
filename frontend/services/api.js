@@ -85,19 +85,6 @@ class ApiService {
     });
   }
 
-  async resetPassword(email, otp, newPassword) {
-    return await this.makeRequest('/auth/reset-password', {
-      method: 'POST',
-      body: JSON.stringify({ email, otp, newPassword }),
-    });
-  }
-
-  async changePassword(currentPassword, newPassword) {
-    return await this.makeRequest('/auth/change-password', {
-      method: 'POST',
-      body: JSON.stringify({ currentPassword, newPassword }),
-    });
-  }
 
   // Bus endpoints
   async getBusDetails() {

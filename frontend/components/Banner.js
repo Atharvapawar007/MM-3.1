@@ -1,21 +1,32 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, SafeAreaView, StatusBar, Platform } from 'react-native';
+import { SvgUri } from 'react-native-svg';
 import { Colors } from '../constants/Colors';
 
 const Banner = () => {
   return (
-    <View style={styles.container}>
-      <Image
-        source={require('../assets/images/icon.png')}
-        style={styles.logo}
-        resizeMode="contain"
-      />
-      <Text style={styles.collegeName}>ABC Engineering College</Text>
-    </View>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: Colors.primary }]}>
+      <StatusBar barStyle="light-content" backgroundColor={Colors.primary} />
+      <View style={[
+        styles.container,
+        // Add top padding on Android to respect status bar notch/holes
+        { paddingTop: Platform.OS === 'android' ? (StatusBar.currentHeight || 0) : 0 }
+      ]}>
+        <SvgUri
+          uri={Image.resolveAssetSource(require('../assets/images/logo.svg')).uri}
+          width={40}
+          height={40}
+        />
+        <Text style={styles.collegeName}>KIT's College of Engineering, Kolhapur</Text>
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    width: '100%'
+  },
   container: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -36,7 +47,7 @@ const styles = StyleSheet.create({
   collegeName: {
     fontSize: 18,
     fontWeight: '600',
-    color: Colors.background,
+    color: '#fff',
   },
 });
 

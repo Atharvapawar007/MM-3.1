@@ -2,19 +2,14 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
 const Driver = sequelize.define('Driver', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+  // PK: drivers.driver_number (string)
+  driver_number: {
+    type: DataTypes.STRING,
+    primaryKey: true
   },
   name: {
     type: DataTypes.STRING,
     allowNull: false
-  },
-  number: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true
   },
   gender: {
     type: DataTypes.ENUM('male', 'female', 'other'),
@@ -28,23 +23,17 @@ const Driver = sequelize.define('Driver', {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
-    validate: {
-      isEmail: true
-    }
-  },
-  bus_plate: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true
+    validate: { isEmail: true }
   },
   bus_number: {
     type: DataTypes.STRING,
-    allowNull: false,
-    unique: true
+    allowNull: true
   }
 }, {
   tableName: 'drivers',
-  timestamps: true
+  timestamps: true,
+  createdAt: 'created_at',
+  updatedAt: 'updated_at'
 });
 
 module.exports = Driver;
