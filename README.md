@@ -70,7 +70,7 @@ React_Native_App/
    DB_HOST=localhost
    DB_USER=root
    DB_PASSWORD=your_mysql_password
-   DB_NAME=bus_tracking_db
+   DB_NAME=bustrack
    JWT_SECRET=your_jwt_secret_key_here
    EMAIL_USER=your_email@gmail.com
    EMAIL_PASS=your_app_password
