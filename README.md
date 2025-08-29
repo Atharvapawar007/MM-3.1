@@ -78,7 +78,7 @@ React_Native_App/
 
 4. **Create MySQL database**
    ```sql
-   CREATE DATABASE bus_tracking_db;
+   CREATE DATABASE bustrack;
    ```
 
 5. **Start the server**
