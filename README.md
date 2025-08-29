@@ -83,7 +83,7 @@ React_Native_App/
 
 5. **Start the server**
    ```bash
-   npm run dev
+   nodemon server.js
    ```
 
 6. **Seed database (optional)**
